@@ -14,6 +14,22 @@ if [ ! -d "/config/.minetest/games/minimal" ]; then
 cp -pr /defaults/games/* /config/.minetest/games/
 fi
 
+# postgres
+if [ "$BACKEND" = "postgresql" ]
+   then
+	   WORLD_MT="/config/.minetest/worlds/$WORLD_NAME/world.mt"
+	   if [ -f $WORLD_MT ]
+	   then
+		   TMP_WORLD_MT=$(mktemp)
+		   egrep -v '^(backend|pgsql_connection)\s*=' $WORLD_MT > $TMP_WORLD_MT
+		   echo -e "backend = $BACKEND\npgsql_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" > $WORLD_MT
+		   cat $TMP_WORLD_MT >> $WORLD_MT && rm $TMP_WORLD_MT
+	   else
+		   mkdir -p "/config/.minetest/worlds/$WORLD_NAME"
+		   echo -e "gameid = minetest\nbackend = $BACKEND\npgsql_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" >> $WORLD_MT
+	   fi
+fi
+
 # permissions
 chown -R abc:abc \
 	/config

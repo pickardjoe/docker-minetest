@@ -9,7 +9,14 @@ LABEL maintainer="sparklyballs"
 
 # environment variables
 ENV HOME="/config" \
-MINETEST_SUBGAME_PATH="/config/.minetest/games"
+MINETEST_SUBGAME_PATH="/config/.minetest/games" \
+WORLD_NAME="world" \
+BACKEND="postgresql" \
+PG_HOST="" \
+PG_DB="minetest" \
+PG_USER="minetest" \
+PG_PASS="minetest" \
+PG_PORT=5432
 
 # build variables
 ARG LDFLAGS="-lintl"
@@ -39,6 +46,7 @@ RUN \
 	make \
 	mesa-dev \
 	openal-soft-dev \
+	postgresql-dev \
 	python-dev \
 	sqlite-dev && \
  apk add --no-cache --virtual=build-dependencies-2 \
@@ -51,6 +59,7 @@ RUN \
 	hiredis \
 	libgcc \
 	libintl \
+        libpq \
 	libstdc++ \
 	luajit \
 	lua-socket \
@@ -96,6 +105,9 @@ RUN \
 	-DENABLE_REDIS=1 \
 	-DENABLE_SOUND=0 \
 	-DENABLE_SYSTEM_GMP=1 \
+    -DENABLE_POSTGRESQL=1 \
+    -DPOSTGRESQL_CONFIG_EXECUTABLE=/usr/bin/pg_config \
+    -DPOSTGRESQL_LIBRARY=/usr/lib/libpq.so \
 	-DRUN_IN_PLACE=0 && \
  make -j 2 && \
  make install && \
