@@ -23,7 +23,7 @@ ARG LDFLAGS="-lintl"
 
 RUN \
  echo "**** install build packages ****" && \
- apk add --no-cache --virtual=build-dependencies \
+apk add --no-cache --virtual=build-dependencies \
 	bzip2-dev \
 	cmake \
 	curl-dev \
@@ -59,7 +59,7 @@ RUN \
 	hiredis \
 	libgcc \
 	libintl \
-        libpq \
+    libpq \
 	libstdc++ \
 	luajit \
 	lua-socket \

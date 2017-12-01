@@ -21,12 +21,18 @@ if [ "$BACKEND" = "postgresql" ]
 	   if [ -f $WORLD_MT ]
 	   then
 		   TMP_WORLD_MT=$(mktemp)
-		   egrep -v '^(backend|pgsql_connection)\s*=' $WORLD_MT > $TMP_WORLD_MT
-		   echo -e "backend = $BACKEND\npgsql_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" > $WORLD_MT
+		   egrep -v '^(backend|player_backend|pgsql_connection|pgsql_player_connection)\s*=' $WORLD_MT > $TMP_WORLD_MT
+		   echo -e "backend = $BACKEND" > $WORLD_MT
+		   echo -e "player_backend = $BACKEND" >> $WORLD_MT
+		   echo -e "pgsql_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" >> $WORLD_MT
+		   echo -e "pgsql_player_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" >> $WORLD_MT
 		   cat $TMP_WORLD_MT >> $WORLD_MT && rm $TMP_WORLD_MT
 	   else
 		   mkdir -p "/config/.minetest/worlds/$WORLD_NAME"
-		   echo -e "gameid = minetest\nbackend = $BACKEND\npgsql_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" >> $WORLD_MT
+		   echo -e "backend = $BACKEND" > $WORLD_MT
+		   echo -e "player_backend = $BACKEND" >> $WORLD_MT
+		   echo -e "pgsql_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" >> $WORLD_MT
+		   echo -e "pgsql_player_connection = host=$PG_HOST port=$PG_PORT dbname=$PG_DB user=$PG_USER password=$PG_PASS" >> $WORLD_MT
 	   fi
 fi
 
