@@ -91,6 +91,7 @@ apk add --no-cache --virtual=build-dependencies \
  cp /tmp/minetest/minetest.conf.example /defaults/minetest.conf && \
  cd /tmp/minetest && \
  cmake . \
+ 	-DCMAKE_BUILD_TYPE=Release \
 	-DBUILD_CLIENT=0 \
 	-DBUILD_SERVER=1 \
 	-DCMAKE_INSTALL_PREFIX=/usr \
